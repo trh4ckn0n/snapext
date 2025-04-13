@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snap Add Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #111;
+            color: #fff;
+            font-family: 'Russo One', sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #ffcc00;
+            text-shadow: 3px 3px 0px #ff0000, -3px -3px 0px #00ff00;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            margin: 10px;
+            background: linear-gradient(45deg, #ff0000, #ff7300, #ffcc00);
+            color: #000;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 2px solid #fff;
+            box-shadow: 0px 0px 10px rgba(255, 0, 0, 0.7);
+        }
+        .button:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 0px 20px rgba(255, 255, 0, 0.9);
+        }
+        .snap-list {
+            text-align: left;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .snap-list label {
+            display: block;
+            padding: 5px;
+            cursor: pointer;
+        }
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🔗 Snap Clients Adding Tool 🔗</h1>
+
+    <div class="container">
+        <button class="button" onclick="openSelected()">Ajouter Sélection</button>
+        <button class="button" onclick="openAll()">Ajouter Tous</button>
+
+        <div class="snap-list">
+            <h3>📜 Liste des clients</h3>
+            {% for link in links %}
+                <label><input type="checkbox" class="snap-check" value="{{ link }}"> {{ link }}</label>
+            {% endfor %}
+        </div>
+        <a href="{{ url_for('logout') }}" style="position: absolute; top: 10px; right: 10px; background: red; color: white; padding: 10px; text-decoration: none; border-radius: 5px;">Déconnexion</a>
+    </div>
+
+    <script>
+        function openSelected() {
+            let selectedLinks = [];
+            document.querySelectorAll(".snap-check:checked").forEach(el => {
+                selectedLinks.push(el.value);
+            });
+            if (selectedLinks.length === 0) {
+                alert("Sélectionne au moins un utilisateur !");
+                return;
+            }
+            sendToServer(selectedLinks);
+        }
+
+        function openAll() {
+            let allLinks = [];
+            document.querySelectorAll(".snap-check").forEach(el => {
+                allLinks.push(el.value);
+                el.checked = true; // Sélectionner tout
+            });
+            sendToServer(allLinks);
+        }
+
+        function sendToServer(links) {
+            fetch("/open", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ links: links })
+            }).then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            });
+        }
+    </script>
+
+</body>
+</html>
