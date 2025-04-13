@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+    <style>
+        body {
+            background: #111;
+            color: #fff;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            padding-top: 100px;
+        }
+        .login-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        input {
+            padding: 10px;
+            font-size: 18px;
+            margin: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+        .button {
+            background: #ffcc00;
+            color: #000;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .button:hover {
+            background: #ffaa00;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🔒 Connexion 🔒</h1>
+    <div class="login-box">
+        <form method="POST">
+            <input type="password" name="password" placeholder="Mot de passe" required>
+            <br>
+            <button class="button" type="submit">Se connecter</button>
+        </form>
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+    </div>
+
+</body>
+</html>
